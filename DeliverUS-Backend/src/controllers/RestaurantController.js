@@ -37,7 +37,7 @@ const indexOwner = async function (req, res) {
     const restaurants = await Restaurant.findAll(
       {
         attributes: { exclude: ['userId'] },
-        where: { userId: req.user.id },
+        where: { userId: req.user.id }, // traeme solo los restaurantes donde userId sea igual al id del usuario
         include: [{
           model: RestaurantCategory,
           as: 'restaurantCategory'
