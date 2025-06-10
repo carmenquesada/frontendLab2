@@ -32,6 +32,24 @@ const create = async function (req, res) {
   }
 }
 
+const indexOwner = async function (req, res) {
+  try {
+    const restaurants = await Restaurant.findAll(
+      {
+        attributes: { exclude: ['userId'] },
+        where: { userId: req.user.id },
+        include: [{
+          model: RestaurantCategory,
+          as: 'restaurantCategory'
+        }]
+      }
+    )
+    res.json(restaurants)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+}
+
 const show = async function (req, res) {
   try {
     const restaurant = await Restaurant.findByPk(req.params.restaurantId, {
@@ -82,6 +100,7 @@ const destroy = async function (req, res) {
 const RestaurantController = {
   index,
   create,
+  indexOwner,
   show,
   update,
   destroy
